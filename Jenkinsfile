@@ -45,6 +45,7 @@ pipeline {
         withAWS(credentials: 'aws_creds') {
           sh "ecs deploy --image softramscloud_api_container docker.io/elrrdockerhub/kenny-api:latest SoftramsCloud-ECS-Cluster softramscloud-api --region us-east-1 --access-key-id $AWS_ACCESS_KEY_ID --secret-access-key $AWS_SECRET_ACCESS_KEY  --rollback --timeout 900"
         }
+      }
     }    
   }
 }
