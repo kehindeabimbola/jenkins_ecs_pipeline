@@ -1,17 +1,15 @@
 pipeline {
   environment {
-    registry = "olayori/jump_api"
-    registryCredential = '38dfd1a1-4f5b-40cb-b37b-d47dec0c8ef2'
+    registry = "elrrdockerhub/kenny-api"
+    registryCredential = 'dockerhub_creds'
     dockerImage = ''
   }
   agent any
 
-  tools {nodejs "node"}
-
   stages {
     stage('Git Checkout') {
       steps {
-        git credentialsId: 'github-token', url: 'https://github.com/olayori/jump_pipeline.git'
+        git credentialsId: 'github_kenny_creds', url: 'https://github.com/kehindeabimbola/jenkins_ecs_pipeline.git'
       }
     }
     stage('Test') {
@@ -44,11 +42,9 @@ pipeline {
     }
     stage('Deploy Image to ECS') {
       steps{
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "AWS_CREDS", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-        ]]) {
-          sh "ecs deploy --image jumpcloud_api_container docker.io/olayori/jump_api:latest JumpCloud-ECS-Cluster jumpcloud-api --region us-east-1 --access-key-id $AWS_ACCESS_KEY_ID --secret-access-key $AWS_SECRET_ACCESS_KEY  --rollback --timeout 900"
+        withAWS(credentials: 'aws_creds') {
+          sh "ecs deploy --image softramscloud_api_container docker.io/elrrdockerhub/kenny-api:latest SoftramsCloud-ECS-Cluster softramscloud-api --region us-east-1 --access-key-id $AWS_ACCESS_KEY_ID --secret-access-key $AWS_SECRET_ACCESS_KEY  --rollback --timeout 900"
         }
-      }
     }    
   }
 }
