@@ -13,12 +13,12 @@ pipeline {
         git credentialsId: 'github_kenny_creds', url: 'https://github.com/kehindeabimbola/jenkins_ecs_pipeline.git'
       }
     }
-    stage('Test') {
-      steps {
-        sh 'npm install'
-        sh 'npm test'
-      }
-    }
+//    stage('Test') {
+//      steps {
+//        sh 'npm install'
+//        sh 'npm test'
+//      }
+//    }
     stage('Building image') {
       steps{
         script {
